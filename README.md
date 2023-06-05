@@ -19,3 +19,10 @@ spec:
     - app.anaeleboo.com
       
 ```
+### Check gateway is running
+```
+kubectl get gateway -n ns
+```
+```
+kubectl describe gateway getawayname -n ns
+```
