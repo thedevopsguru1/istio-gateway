@@ -26,3 +26,25 @@ kubectl get gateway -n ns
 ```
 kubectl describe gateway getawayname -n ns
 ```
+# Virtual service
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: myallapp
+spec:
+  hosts:
+  - app.anaeleboo.com
+  gateways;
+  - my-gateway # name of the gateway created above
+  http:
+  - match:
+    - uri:
+        exact: /
+  route:
+  - destination:
+      host: my-app
+      port: 8080
+```
+ 
+  
