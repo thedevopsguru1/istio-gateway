@@ -31,20 +31,39 @@ kubectl describe gateway getawayname -n ns
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: myallapp
+  name: bookinfo-rule
+  namespace: bookinfo-namespace
 spec:
   hosts:
-  - app.anaeleboo.com
-  gateways;
-  - my-gateway # name of the gateway created above
+  - reviews.prod.svc.cluster.local
+  - uk.bookinfo.com
+  - eu.bookinfo.com
+  gateways:
+  - some-config-namespace/my-gateway
+  - mesh # applies to all the sidecars in the mesh
   http:
   - match:
+    - headers:
+        cookie:
+          exact: "user=dev-123"
+    route:
+    - destination:
+        port:
+          number: 7777
+        host: reviews.qa.svc.cluster.local
+  - match:
     - uri:
-        exact: /
-  route:
-  - destination:
-      host: my-app
-      port: 8080
+        prefix: /reviews/
+    route:
+    - destination:
+        port:
+          number: 9080 # can be omitted if it's the only port for reviews
+        host: reviews.prod.svc.cluster.local
+      weight: 80
+    - destination:
+        host: reviews.qa.svc.cluster.local
+      weight: 20
+
 ```
  
   
