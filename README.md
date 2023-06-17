@@ -26,6 +26,31 @@ kubectl get gateway -n ns
 ```
 kubectl describe gateway getawayname -n ns
 ```
+# TLS gateway
+```
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: project1 #istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: eboo
+      hosts:
+        - 'app.dts-projects.cloud'
+        # -'*'
+    
+
+# this from outside to ingress
+```
 # Virtual service
 ```
 apiVersion: networking.istio.io/v1alpha3
